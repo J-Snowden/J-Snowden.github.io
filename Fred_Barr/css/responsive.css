@@ -1,0 +1,35 @@
+@media screen and (min-width: 480px) {
+  h1 {
+    font-size: 2.5em;
+    }
+}
+
+
+@media screen and (min-width: 860px) {
+  h1{
+    font-size: 3.5em;
+  }
+
+  #barrtrail {
+    max-width: 66%;
+  }
+
+  p {
+    font-size: 1.2em;
+  }
+
+  footer ul li a {
+    font-size: 1.25em;
+  }
+
+  footer ul li {
+    display: inline;
+  }
+}
+
+@media screen and (min-width: 1060px) {
+  h1{
+    font-size: 4.5em;
+    padding-top: 25px;
+  }
+}
