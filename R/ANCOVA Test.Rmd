@@ -1,0 +1,115 @@
+---
+title: "ANCOVA Test Using R Markdown"
+#author: "Jeffrey Snowden"
+#date: "2/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "C:/Users/Jeffrey/Desktop/R")
+library(tidyverse)
+library(ggpubr)
+library(rstatix)
+library(broom)
+library(datarium)
+library(haven)
+library(foreign)
+library(ggplot2)
+library(emmeans)
+library(gridExtra)
+library(cowplot)
+library(pander)
+
+setwd("C:/Users/Jeffrey/Desktop/R")
+
+urbanhs <- read_sav("UrbanHS.sav")
+
+urbanhs$NGA <- as.factor(urbanhs$NGA)
+
+urbanhs <- urbanhs %>%
+  select(ID, NGA, Grade9GPA, MeanReadMath, RatioCreditsAttemptedEarned, MinorityWhite, FRLYesNo) %>%
+  rename(MeanRM = MeanReadMath, RatioCredits = RatioCreditsAttemptedEarned)
+```
+
+This R Markdown follows the guide Joe posted: [ANCOVA in R](https://www.datanovia.com/en/lessons/ancova-in-r/). I have not checked all of the assumptions, yet.
+
+## Assumptions
+
+These plots check the linearity between each covariate and the outcome variable. GPA and credit ratio appear to have a mostly linear relationship, while GPA and the mean of the TCAP Math and Reading scores is not linear as they cross. I'm not sure how much of a problem this is.
+
+```{r echo=FALSE, warning=FALSE}
+#Create scatter plot for covariate MeanRM and GPA
+plot1 <- ggscatter(
+  urbanhs, x = "MeanRM", y = "Grade9GPA",
+  color = "NGA", add = "reg.line"
+  )+
+  stat_regline_equation(
+    aes(label =  paste(..eq.label.., ..rr.label.., sep = "~~~~"), color = NGA)
+  )+
+  xlab("Mean Reading and Math Score")+
+  ylab("9th Grade GPA")+
+  ggtitle("9th Grade GPA and TCAP Scores")
+
+plot1
+
+#Create scatter plot for covariate RatioCredits and GPA
+plot2 <- ggscatter(
+  urbanhs, x = "RatioCredits", y = "Grade9GPA",
+  color = "NGA", add = "reg.line"
+)+
+  stat_regline_equation(
+    aes(label =  paste(..eq.label.., ..rr.label.., sep = "~~~~"), color = NGA)
+  )+
+  xlab("Credits Earned to Credits Attempted")+
+  ylab("9th Grade GPA")+
+  ggtitle("9th Grade GPA and Credit Ratio")
+
+plot2
+```
+
+## The ANCOVA Model
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+#Run the ANCOVA controlling for MeanRM and RatioCredits
+#model <- aov(lm(Grade9GPA ~ MeanRM + RatioCredits + NGA, data = urbanhs), type="III")
+#pander(summary(model), style = "rmarkdown")
+```
+
+I ran an ANCOVA model with the same covariates, the output matches what I got from SPSS. I can't figure out how to get the sum of squares with this function.
+```{r echo=FALSE, include=FALSE}
+res.aov <- urbanhs %>% anova_test(Grade9GPA ~ RatioCredits + MeanRM + NGA, type=3)
+```
+
+```{r echo=FALSE}
+pander(get_anova_table(res.aov), style = "rmarkdown", split.tables = 120)
+```
+
+## Estimated Marginal Means
+The estimated marignal means below match the output I got from SPSS when using the Bonferroni adjustment.
+```{r echo=FALSE, include=FALSE}
+#Get the Estimated Marginal Means
+pwc <- urbanhs %>%
+  emmeans_test (
+    Grade9GPA ~ NGA, covariate = c("RatioCredits", "MeanRM"),
+    p.adjust.method = "bonferroni"
+  )
+#pander(pwc, style = "rmarkdown")
+```
+
+```{r echo=FALSE}
+#Print the EMM's
+pander(get_emmeans(pwc), style = "rmarkdown", split.table = 120)
+
+# Visualization: line plots with p-values
+pwc <- pwc %>% add_xy_position(x = "NGA", fun = "mean_se")
+ggline(get_emmeans(pwc), x = "NGA", y = "emmean") +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) + 
+  labs(
+    subtitle = get_test_label(res.aov, detailed = TRUE),
+    caption = get_pwc_label(pwc)
+  )+
+  #xlab("9th Grade Academy")+
+  ylab("Estimated Marginal Means")+
+  scale_x_discrete("9th Grade Academy", labels = c("Did not Attend", "Attended"))+
+  ggtitle("Estimate Marginal Means for 9th Grade Academy")
+```
