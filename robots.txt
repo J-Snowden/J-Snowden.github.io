@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /about.html
+Disallow: /contact.html
+Disallow: /ancova_test.html
+Disallow: /two_way_ancova.html
+Disallow: /two_way_ancova_attendance9.html
+Disallow: /two_way_ancova_creditsearned.html
+Disallow: /Fred_Barr/
+Disallow: /R/
