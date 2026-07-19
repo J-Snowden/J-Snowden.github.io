@@ -37,7 +37,7 @@
     --accent: oklch(0.5 0.1 250);
     --border: oklch(0.89 0.006 80);
     --border-strong: oklch(0.82 0.008 80);
-    --measure: 63ch;
+    --measure: 66ch;
     /* consistent vertical rhythm between top-level sections */
     --section-gap: clamp(2.25rem, 5.5vw, 3.75rem);
     color-scheme: light;
@@ -118,7 +118,10 @@
 
   .wrap {
     position: relative;
-    max-width: 760px;
+    /* Wide container so grid sections (hero, capabilities, projects) can use
+       the horizontal space. Running-prose blocks stay capped at --measure
+       individually so their line length never stretches with the container. */
+    max-width: 1080px;
     margin: 0 auto;
     padding: clamp(3rem, 8vw, 6.5rem) clamp(1.25rem, 5vw, 2.5rem) 4rem;
   }
@@ -148,8 +151,30 @@
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
 
-  /* ---------- header ---------- */
-  header { margin-bottom: var(--section-gap); }
+  /* ---------- header / hero ---------- */
+  /* Two columns on wide screens: text left, headshot right (fills the space
+     that used to be empty). Collapses to a single stacked column on mobile. */
+  .hero {
+    margin-bottom: var(--section-gap);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  /* Keep the hero prose (tagline + chips + links) at a readable measure even
+     though it sits in a flexible grid column. */
+  .hero-text { max-width: var(--measure); min-width: 0; }
+  .hero-photo { justify-self: end; }
+  .hero-photo img {
+    display: block;
+    width: clamp(210px, 24vw, 300px);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    /* Tasteful rounded square, framed like the other figures. */
+    border-radius: 18px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+  }
   h1 {
     font-size: clamp(1.9rem, 5vw, 2.5rem);
     font-weight: 600;
@@ -232,6 +257,9 @@
     margin: 0 0 1.6rem;
   }
   .figure {
+    /* Kept single-column (section unchanged); capped so the wider container
+       doesn't stretch the chart to an unreadable size. */
+    max-width: 860px;
     margin: 0 0 2rem;
   }
   .figure img {
@@ -298,17 +326,8 @@
 
   /* ---------- list sections (capabilities, projects) ---------- */
   .also, .caps { margin-bottom: var(--section-gap); }
-  .also ul, .caps ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--border);
-  }
-  .also li, .caps li {
-    padding: 1.15rem 0;
-    border-bottom: 1px solid var(--border);
-    max-width: var(--measure);
-  }
+
+  /* shared card typography */
   .also .name, .caps .name {
     font-weight: 600;
     font-size: 1.02rem;
@@ -319,13 +338,62 @@
     line-height: 1.5;
     color: var(--muted);
     display: block;
-    margin-top: 0.15rem;
+    margin-top: 0.2rem;
     text-wrap: pretty;
+  }
+
+  /* capabilities — 2×2 grid of cards across the full container width */
+  .caps ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.9rem, 2vw, 1.35rem);
+  }
+  .caps li {
+    padding: 1.2rem 1.35rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+  }
+
+  /* selected projects — card grid, 2 across on wide screens, with thumbnails */
+  .also ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.1rem, 2.4vw, 1.6rem);
+  }
+  .also li {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .also .thumb {
+    margin: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .also .thumb img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top center;
+  }
+  .also .body {
+    padding: 1.05rem 1.25rem 1.2rem;
   }
   .also .links {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 0.85rem;
-    margin-top: 0.4rem;
+    margin-top: 0.6rem;
     display: inline-flex;
     gap: 0.7rem;
   }
@@ -377,6 +445,22 @@
   footer a { color: var(--muted); }
   footer .dot { color: var(--border-strong); user-select: none; }
 
+  /* ---------- responsive: collapse grids to a single column ---------- */
+  /* Hero: stack the headshot below the text; center the photo. */
+  @media (max-width: 760px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: clamp(1.5rem, 6vw, 2.25rem);
+    }
+    .hero-photo { justify-self: center; }
+    .hero-photo img { width: clamp(180px, 48vw, 240px); }
+  }
+  /* Capability and project grids: one column on narrow screens. */
+  @media (max-width: 640px) {
+    .caps ul,
+    .also ul { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 430px) {
     body { font-size: 17px; }
     .intro { font-size: 1.12rem; }
@@ -392,29 +476,36 @@
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">◐ Theme</button>
   </div>
 
-  <header>
-    <h1>Jeffrey Snowden</h1>
-    <p class="role">Research &amp; Measurement Scientist</p>
-    <p class="intro">
-      I design ways to measure hard-to-measure things, model messy human data,
-      and build tools that make the results usable. 8 years turning research
-      into decisions.
-    </p>
-    <ul class="chips" aria-label="Credentials">
-      <li>Published in <span class="em">Science</span></li>
-      <li>M.A. Research &amp; Evaluation Methods</li>
-      <li>R · psychometrics · multilevel modeling</li>
-    </ul>
-    <nav class="meta" aria-label="Contact and profiles">
-      <a href="mailto:jeffreysnowden@gmail.com">Email</a>
-      <span class="dot" aria-hidden="true">·</span>
-      <!-- FILL IN: confirm this is the correct LinkedIn URL (carried over from the previous site). -->
-      <a href="https://www.linkedin.com/in/jeffrey-snowden-710446110" rel="me">LinkedIn</a>
-      <span class="dot" aria-hidden="true">·</span>
-      <a href="Snowden%20Resume.pdf">Résumé (PDF)</a>
-      <span class="dot" aria-hidden="true">·</span>
-      <a href="https://github.com/J-Snowden" rel="me">GitHub</a>
-    </nav>
+  <header class="hero">
+    <div class="hero-text">
+      <h1>Jeffrey Snowden</h1>
+      <p class="role">Research &amp; Measurement Scientist</p>
+      <p class="intro">
+        I design ways to measure hard-to-measure things, model messy human data,
+        and build tools that make the results usable. 8 years turning research
+        into decisions.
+      </p>
+      <ul class="chips" aria-label="Credentials">
+        <li>Published in <span class="em">Science</span></li>
+        <li>M.A. Research &amp; Evaluation Methods</li>
+        <li>R · psychometrics · multilevel modeling</li>
+      </ul>
+      <nav class="meta" aria-label="Contact and profiles">
+        <a href="mailto:jeffreysnowden@gmail.com">Email</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <!-- FILL IN: confirm this is the correct LinkedIn URL (carried over from the previous site). -->
+        <a href="https://www.linkedin.com/in/jeffrey-snowden-710446110" rel="me">LinkedIn</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <a href="Snowden%20Resume.pdf">Résumé (PDF)</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <a href="https://github.com/J-Snowden" rel="me">GitHub</a>
+      </nav>
+    </div>
+    <!-- Professional headshot. Add the file at img/headshot.jpg (square crop
+         works best; it is displayed as a rounded square). -->
+    <div class="hero-photo">
+      <img src="img/headshot.jpg" alt="Jeffrey Snowden" width="300" height="300">
+    </div>
   </header>
 
   <main>
@@ -488,31 +579,46 @@
       <p class="label" id="also-title">Selected projects</p>
       <ul>
         <li>
-          <span class="name">Macroscope · Trends Viewer</span>
-          <span class="desc">Consumer time-series data, brushable trend UI — turning a raw export into an explorable dashboard.</span>
-          <span class="links">
-            <a href="https://j-snowden.github.io/macrofactor-dashboard/">Live</a>
-            <span class="dot" aria-hidden="true">·</span>
-            <a href="https://github.com/J-Snowden/macrofactor-dashboard">Code</a>
-          </span>
+          <figure class="thumb">
+            <img src="img/macrofactor-dashboard.webp" alt="Screenshot of the Macroscope trends viewer dashboard" loading="lazy">
+          </figure>
+          <div class="body">
+            <span class="name">Macroscope · Trends Viewer</span>
+            <span class="desc">Consumer time-series data, brushable trend UI — turning a raw export into an explorable dashboard.</span>
+            <span class="links">
+              <a href="https://j-snowden.github.io/macrofactor-dashboard/">Live</a>
+              <span class="dot" aria-hidden="true">·</span>
+              <a href="https://github.com/J-Snowden/macrofactor-dashboard">Code</a>
+            </span>
+          </div>
         </li>
         <li>
-          <span class="name">Plumb · Property Tax Protest</span>
-          <span class="desc">Real public dataset + rules engine generating a defensible report — an end-to-end data product against messy real-world data.</span>
-          <span class="links">
-            <a href="https://plumbtax-pulmb.hf.space/">Live</a>
-            <span class="dot" aria-hidden="true">·</span>
-            <a href="https://github.com/J-Snowden/plumb">Code</a>
-          </span>
+          <figure class="thumb">
+            <img src="img/property-tax-protest.webp" alt="Screenshot of the Plumb property tax protest report" loading="lazy">
+          </figure>
+          <div class="body">
+            <span class="name">Plumb · Property Tax Protest</span>
+            <span class="desc">Real public dataset + rules engine generating a defensible report — an end-to-end data product against messy real-world data.</span>
+            <span class="links">
+              <a href="https://plumbtax-pulmb.hf.space/">Live</a>
+              <span class="dot" aria-hidden="true">·</span>
+              <a href="https://github.com/J-Snowden/plumb">Code</a>
+            </span>
+          </div>
         </li>
         <li>
-          <span class="name">T4A Literature Mural</span>
-          <span class="desc">Interactive synthesis of a research literature — information design and domain modeling.</span>
-          <span class="links">
-            <a href="https://j-snowden.github.io/t4a-literature-mural/">Live</a>
-            <span class="dot" aria-hidden="true">·</span>
-            <a href="https://github.com/J-Snowden/t4a-literature-mural">Code</a>
-          </span>
+          <figure class="thumb">
+            <img src="img/t4a-literature-mural.webp" alt="Screenshot of the T4A literature mural" loading="lazy">
+          </figure>
+          <div class="body">
+            <span class="name">T4A Literature Mural</span>
+            <span class="desc">Interactive synthesis of a research literature — information design and domain modeling.</span>
+            <span class="links">
+              <a href="https://j-snowden.github.io/t4a-literature-mural/">Live</a>
+              <span class="dot" aria-hidden="true">·</span>
+              <a href="https://github.com/J-Snowden/t4a-literature-mural">Code</a>
+            </span>
+          </div>
         </li>
       </ul>
     </section>
