@@ -349,10 +349,14 @@
   /* ---------- list sections (capabilities, projects) ---------- */
   .also, .caps { margin-bottom: var(--section-gap); }
 
-  /* shared card typography */
+  /* shared card typography. The project titles are <h3> and the capability
+     names are <span>; the reset here (margin/line-height) keeps the heading
+     rendering pixel-identical to the old inline markup. */
   .also .name, .caps .name {
     font-weight: 600;
     font-size: 1.02rem;
+    line-height: 1.6;
+    margin: 0;
   }
   .also .desc, .caps .desc {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -380,11 +384,15 @@
     background: var(--surface);
   }
 
-  /* selected projects: two-column card grid on wide screens (two rows of two) */
+  /* selected projects: two-column card grid on wide screens (two rows of two).
+     Capped a bit narrower than the full container and centered — at full width
+     the two-up cards (and their screenshots) grew large enough to dominate the
+     page, so this holds them to roughly three-quarters of the width. */
   .also ul {
     list-style: none;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
+    max-width: 48rem;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1.1rem, 2.4vw, 1.6rem);
@@ -402,10 +410,12 @@
     border-bottom: 1px solid var(--border);
     background: var(--bg);
   }
+  /* 2:1 crop — 20% shorter than the source 16:10, kept top-aligned so each
+     shot still shows its header/title. */
   .also .thumb img {
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 2 / 1;
     object-fit: cover;
     object-position: top center;
   }
@@ -533,14 +543,15 @@
       <h1>Jeffrey Snowden</h1>
       <p class="role">Research &amp; Measurement Scientist</p>
       <p class="intro">
-        I work out how to measure things that are hard to measure, then model the
-        messy human data that comes back. The part I like most is building the
-        tool that gets those findings in front of the people who need them. I've
-        been at this for eight years.
+        Over the past eight years, I have designed surveys and measurement instruments, 
+        analyzed complex quantitative and qualitative data, and built tools that help 
+        people understand and use the findings. I am especially interested in questions
+         that are difficult to measure and in finding practical ways to make complex 
+         analyses clear and useful.
       </p>
       <ul class="chips" aria-label="Credentials">
         <li>M.A. Research &amp; Evaluation Methods</li>
-        <li>R · psychometrics · multilevel modeling</li>
+        <li>R · Psychometrics · Multilevel Modeling</li>
         <li>Published in <span class="em">Science</span></li>
       </ul>
       <nav class="meta" aria-label="Contact and profiles">
@@ -549,7 +560,7 @@
         <!-- FILL IN: confirm this is the correct LinkedIn URL (carried over from the previous site). -->
         <a href="https://www.linkedin.com/in/jeffrey-snowden-710446110" rel="me">LinkedIn</a>
         <span class="dot" aria-hidden="true">·</span>
-        <a href="Snowden%20Resume.pdf">Résumé (PDF)</a>
+        <a href="Snowden%20Resume.pdf">Resume</a>
         <span class="dot" aria-hidden="true">·</span>
         <a href="https://github.com/J-Snowden" rel="me">GitHub</a>
       </nav>
@@ -563,15 +574,15 @@
 
   <main>
     <section class="caps" aria-labelledby="caps-title">
-      <p class="label" id="caps-title">What I do</p>
+      <h2 class="label" id="caps-title">What I do</h2>
       <ul>
         <li>
           <span class="name">Measurement &amp; survey science</span>
-          <span class="desc">Instrument design and validation, scale development, Rasch/IRT, reliability &amp; validity.</span>
+          <span class="desc">Instrument design and validation, scale development, Rasch measurement, reliability &amp; validity.</span>
         </li>
         <li>
           <span class="name">Statistical modeling</span>
-          <span class="desc">Multilevel/mixed-effects models, quasi-experimental design, latent profile / person-centered analysis.</span>
+          <span class="desc">Multilevel models, quasi-experimental design, and latent profile analysis.</span>
         </li>
         <li>
           <span class="name">Analytics engineering &amp; automation</span>
@@ -603,7 +614,9 @@
             <img class="fig-dark" src="img/latent-profile-explorer-dark.png"
                  alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors (Clarity, Enablement, Engagement, Impact, and Autonomy) next to a table of each profile's size and classification certainty.">
           </a>
-          <figcaption>Four recovered experience profiles, separating mainly on the affective factors: Engagement, Impact, and Autonomy.</figcaption>
+          <figcaption>
+            Four experience profiles, distinguished mainly by Engagement, Impact, and Autonomy.
+          </figcaption>
         </figure>
 
           <nav class="actions" aria-label="Latent Profile Explorer links">
@@ -618,57 +631,35 @@
         <div class="lead-aside">
           <div class="lead-body">
             <p>
-              <strong>Method.</strong> Latent profile analysis finds
-              <span class="em">kinds</span> of people rather than differences between
-              groups defined in advance. Here it recovers four distinct experience
-              profiles from a synthetic employee-experience survey and shows what it
-              costs to choose three or five instead.
+              <strong>What it does.</strong> Latent profile analysis identifies groups with 
+              similar response patterns rather than starting with groups defined in advance.
+               Using synthetic employee-experience data, the project finds four profiles and 
+               shows what changes with three or five.
             </p>
             <p>
-              <strong>So what.</strong> It surfaces the segment having the worst
-              experience even when those people are spread evenly across department,
-              tenure, and level (the cuts a standard HR dashboard already shows).
+              <strong>Why it matters.</strong> It reveals a group reporting especially 
+              negative experiences whose members are spread across departments, tenure groups, 
+              and levels. This pattern could be missed in a standard HR dashboard.
             </p>
           </div>
 
-          <p class="note">
-            Illustrative demo. Built on synthetic data I generated to mirror an
-            employee-listening use case; the analytic approach (latent profile
-            analysis, segment profiling) reflects methods I use in my real research.
-            No proprietary or real employee data.
-          </p>
+       
         </div>
       </div>
     </section>
 
     <section class="also" aria-labelledby="also-title">
-      <p class="label" id="also-title">Selected projects</p>
+      <h2 class="label" id="also-title">Selected projects</h2>
       <ul>
         <li>
           <figure class="thumb">
-            <a href="https://plumbtax-pulmb.hf.space/">
-              <img src="img/property-tax-protest.webp" alt="Screenshot of the Plumb property tax protest report" loading="lazy">
-            </a>
-          </figure>
-          <div class="body">
-            <span class="name">Plumb · Property Tax Protest</span>
-            <span class="desc">Real public dataset plus a rules engine that generates a defensible report, an end-to-end data product built against messy real-world data.</span>
-            <span class="links">
-              <a href="https://plumbtax-pulmb.hf.space/">Live</a>
-              <span class="dot" aria-hidden="true">·</span>
-              <a href="https://github.com/J-Snowden/plumb">Code</a>
-            </span>
-          </div>
-        </li>
-        <li>
-          <figure class="thumb">
             <a href="https://j-snowden.github.io/macrofactor-dashboard/">
-              <img src="img/macrofactor-dashboard.webp" alt="Screenshot of the Macroscope trends viewer dashboard" loading="lazy">
+              <img src="img/macrofactor-dashboard.png" alt="Screenshot of the Macroscope trends viewer dashboard" loading="lazy">
             </a>
           </figure>
           <div class="body">
-            <span class="name">Macroscope · Trends Viewer</span>
-            <span class="desc">Consumer time-series data with a brushable trend UI that makes a raw export explorable.</span>
+            <h3 class="name">Macroscope · Trends Viewer</h3>
+            <span class="desc">Interactive viewer for exploring patterns in consumer time-series data.</span>
             <span class="links">
               <a href="https://j-snowden.github.io/macrofactor-dashboard/">Live</a>
               <span class="dot" aria-hidden="true">·</span>
@@ -678,15 +669,31 @@
         </li>
         <li>
           <figure class="thumb">
-            <!-- FILL IN: add the screenshot at img/ai-persona-matrix.webp
-                 (16:10 crop, top-aligned, to match the other project thumbs). -->
-            <a href="https://j-snowden.github.io/ai-persona-sorter/">
-              <img src="img/ai-persona-matrix.webp" alt="Screenshot of the AI Persona Matrix interactive framework" loading="lazy">
+            <a href="https://plumbtax-pulmb.hf.space/">
+              <img src="img/property-tax-protest.png" alt="Screenshot of the Plumb property tax protest report" loading="lazy">
             </a>
           </figure>
           <div class="body">
-            <span class="name">AI Persona Matrix</span>
-            <span class="desc">An interactive framework that maps twelve ways people work with AI, plotted by how much they shape their prompts and how carefully they check the output. I built it for a staff presentation, to help a non-technical team recognize its own habits and use AI more deliberately.</span>
+            <h3 class="name">Plumb · Property Tax Protest</h3>
+            <span class="desc">Public property-tax data developed into a tool that generates a defensible protest report.</span>
+            <span class="links">
+              <a href="https://plumbtax-pulmb.hf.space/">Live</a>
+              <span class="dot" aria-hidden="true">·</span>
+              <a href="https://github.com/J-Snowden/plumb">Code</a>
+            </span>
+          </div>
+        </li>
+        <li>
+          <figure class="thumb">
+            <!-- FILL IN: add the screenshot at img/ai-persona-matrix.png
+                 (top-aligned; the CSS crops it to a 2:1 strip like the others). -->
+            <a href="https://j-snowden.github.io/ai-persona-sorter/">
+              <img src="img/ai-persona-matrix.png" alt="Screenshot of the AI Persona Matrix interactive framework" loading="lazy">
+            </a>
+          </figure>
+          <div class="body">
+            <h3 class="name">Human-AI Matrix</h3>
+            <span class="desc">An interactive framework for examining how people work with AI and encouraging deliberate choices.</span>
             <span class="links">
               <a href="https://j-snowden.github.io/ai-persona-sorter/">Live</a>
               <span class="dot" aria-hidden="true">·</span>
@@ -697,12 +704,12 @@
         <li>
           <figure class="thumb">
             <a href="https://j-snowden.github.io/t4a-literature-mural/">
-              <img src="img/t4a-literature-mural.webp" alt="Screenshot of the T4A literature mural" loading="lazy">
+              <img src="img/t4a-literature-mural.png" alt="Screenshot of the T4A literature mural" loading="lazy">
             </a>
           </figure>
           <div class="body">
-            <span class="name">T4A Literature Mural</span>
-            <span class="desc">Interactive synthesis of a research literature, combining information design and domain modeling.</span>
+            <h3 class="name">Literature Mural</h3>
+            <span class="desc">Literature synthesis organizing research into an interactive visual model.</span>
             <span class="links">
               <a href="https://j-snowden.github.io/t4a-literature-mural/">Live</a>
               <span class="dot" aria-hidden="true">·</span>
@@ -715,34 +722,35 @@
 
     <div class="duo">
     <section class="about" aria-labelledby="about-title">
-      <p class="label" id="about-title">About</p>
+      <h2 class="label" id="about-title">About</h2>
       <p>
-        I've spent eight years at a science-education research nonprofit doing
-        measurement, evaluation, and analytics. That means designing and
-        validating instruments, modeling messy human data, and turning results
-        into something the people who act on them can actually use. My background
-        leans heavy on methods (psychometrics, multilevel modeling, survey
-        design), but I'm just as happy building the tool that makes an analysis
-        usable as I am running the analysis itself.
+        I have spent the past eleven years at BSCS Science Learning, including
+        eight years in research roles. I began in a clerical position, moved
+        into application support, and eventually became a research scientist.
+        That pathway has shaped how I approach my work. I enjoy the
+        methodological side of research, including survey and instrument design,
+        psychometrics, multilevel modeling, and mixed-methods research, but I am
+        equally interested in making the results accessible and useful. That may
+        mean developing a dashboard, automating an analysis process, or finding
+        a clearer way to communicate the findings.
       </p>
       <p>
-        I co-chair our IRB and write the measurement and analysis sections of the
-        NSF proposals that fund our research. I also co-lead our AI task force,
-        helping the organization work out where AI genuinely helps and setting
-        guidelines for using it responsibly. On the side I build things:
-        dashboards, small data products, and the occasional LLM prototype,
-        usually because making something is how I understand how it works.
+        Alongside my research responsibilities, I co-chair our IRB, contribute
+        the measurement and analysis sections of NSF proposals, and co-lead our
+        AI task force. These roles have given me experience thinking carefully
+        about research ethics, data privacy, participant protection, and the
+        responsible use of new technologies.
       </p>
       <p>
-        What I'm best at is learning quickly and finding a way through the fuzzy
-        problems where the path isn't obvious yet. I like being the person who can
-        pick up an unfamiliar domain, figure out how it fits together, and ship
-        something real.
+        Many of the technical skills I use today are ones I taught myself because
+        a project or problem required them. I enjoy working through unfamiliar
+        problems, learning what I need, and building something that makes the work
+        more useful for others. The projects on this site reflect that approach.
       </p>
     </section>
 
     <section class="pubs" aria-labelledby="pubs-title">
-      <p class="label" id="pubs-title">Selected publications</p>
+      <h2 class="label" id="pubs-title">Selected publications</h2>
       <ul>
         <li>
           Donovan, B. M., Weindling, M., Amemiya, J., Salazar, B., Lee, D.,
@@ -769,6 +777,9 @@
           Education, 21</span>(4), 1339–1362.
           <a href="https://doi.org/10.1007/s10763-022-10295-1">https://doi.org/10.1007/s10763-022-10295-1</a>
         </li>
+        <li>
+          <a href="cv.pdf">View full CV</a> for publications, presentations, and additional research experience
+        </li>
       </ul>
     </section>
     </div>
@@ -777,12 +788,13 @@
   <footer>
     <nav class="foot-links" aria-label="Contact">
       <a href="mailto:jeffreysnowden@gmail.com">Email</a>
-      <span class="dot" aria-hidden="true">·</span>
-      <a href="https://www.linkedin.com/in/jeffrey-snowden-710446110" rel="me">LinkedIn</a>
-      <span class="dot" aria-hidden="true">·</span>
-      <a href="https://github.com/J-Snowden" rel="me">GitHub</a>
-      <span class="dot" aria-hidden="true">·</span>
-      <a href="cv.pdf">CV (PDF)</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <!-- FILL IN: confirm this is the correct LinkedIn URL (carried over from the previous site). -->
+        <a href="https://www.linkedin.com/in/jeffrey-snowden-710446110" rel="me">LinkedIn</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <a href="Snowden%20Resume.pdf">Resume</a>
+        <span class="dot" aria-hidden="true">·</span>
+        <a href="https://github.com/J-Snowden" rel="me">GitHub</a>
     </nav>
     <span class="copyright">© 2026 Jeffrey Snowden</span>
   </footer>
