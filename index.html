@@ -414,6 +414,14 @@
 
   /* ---------- publications ---------- */
   .pubs { margin-bottom: var(--section-gap); }
+  /* The "About" label is enlarged to 1.05rem because `.about p` outranks
+     `.label` on specificity; match the Publications label to it so the two
+     paired column headings render at the same size. */
+  .pubs .label {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin-bottom: 1.15rem;
+  }
   .pubs ul {
     list-style: none;
     margin: 0;
