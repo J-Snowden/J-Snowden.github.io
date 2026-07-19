@@ -123,7 +123,7 @@
        individually so their line length never stretches with the container. */
     max-width: 1080px;
     margin: 0 auto;
-    padding: clamp(3rem, 8vw, 6.5rem) clamp(1.25rem, 5vw, 2.5rem) 4rem;
+    padding: clamp(3rem, 8vw, 6.5rem) clamp(1.25rem, 5vw, 2.5rem) 1.25rem;
   }
 
   /* ---------- theme toggle (top-right) ---------- */
@@ -458,7 +458,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1.75rem, 4vw, 3.5rem);
     align-items: start;
-    margin-bottom: var(--section-gap);
+    /* Last block before the footer — a tighter gap than the inter-section
+       rhythm so the page doesn't trail off with a big void above the footer. */
+    margin-bottom: 1.5rem;
   }
   .duo > section { margin-bottom: 0; min-width: 0; }
 
@@ -467,7 +469,7 @@
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 0.82rem;
     color: var(--faint);
-    padding-top: 2rem;
+    padding-top: 1.25rem;
     border-top: 1px solid var(--border);
     display: flex;
     flex-wrap: wrap;
