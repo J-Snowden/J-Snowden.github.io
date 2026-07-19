@@ -449,7 +449,6 @@
     margin: 0 0 1.15rem;
     text-wrap: pretty;
   }
-  .about .actions { margin-top: 1.6rem; }
 
   /* Publications and About share a two-column row on wide screens so the
      lower page uses the full width, matching the sections above it. */
@@ -465,6 +464,8 @@
   .duo > section { margin-bottom: 0; min-width: 0; }
 
   /* ---------- footer ---------- */
+  /* Contact links on the left, copyright on the right; wraps to a stacked
+     column (links then copyright, both left-aligned) on narrow screens. */
   footer {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 0.82rem;
@@ -473,10 +474,18 @@
     border-top: 1px solid var(--border);
     display: flex;
     flex-wrap: wrap;
-    gap: 0.55rem 0.7rem;
+    justify-content: space-between;
+    gap: 0.55rem 0.9rem;
     align-items: center;
   }
+  .foot-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.55rem;
+  }
   footer a { color: var(--muted); }
+  footer a:hover { color: var(--accent); }
   footer .dot { color: var(--border-strong); user-select: none; }
 
   /* ---------- responsive: collapse grids to a single column ---------- */
@@ -701,15 +710,6 @@
         Lately going deep on LLM/RAG systems for assessment and scaling analytics
         workflows.
       </p>
-      <nav class="actions" aria-label="Contact">
-        <a class="primary" href="mailto:jeffreysnowden@gmail.com">Email</a>
-        <span class="dot" aria-hidden="true">·</span>
-        <a href="https://www.linkedin.com/in/jeffrey-snowden-710446110" rel="me">LinkedIn</a>
-        <span class="dot" aria-hidden="true">·</span>
-        <a href="https://github.com/J-Snowden" rel="me">GitHub</a>
-        <span class="dot" aria-hidden="true">·</span>
-        <a href="cv.pdf">CV (PDF)</a>
-      </nav>
     </section>
 
     <section class="pubs" aria-labelledby="pubs-title">
@@ -746,7 +746,16 @@
   </main>
 
   <footer>
-    <span>© 2026 Jeffrey Snowden</span>
+    <nav class="foot-links" aria-label="Contact">
+      <a href="mailto:jeffreysnowden@gmail.com">Email</a>
+      <span class="dot" aria-hidden="true">·</span>
+      <a href="https://www.linkedin.com/in/jeffrey-snowden-710446110" rel="me">LinkedIn</a>
+      <span class="dot" aria-hidden="true">·</span>
+      <a href="https://github.com/J-Snowden" rel="me">GitHub</a>
+      <span class="dot" aria-hidden="true">·</span>
+      <a href="cv.pdf">CV (PDF)</a>
+    </nav>
+    <span class="copyright">© 2026 Jeffrey Snowden</span>
   </footer>
 
 </div>
