@@ -420,18 +420,15 @@
     padding: 0;
     max-width: var(--measure);
   }
+  /* Match the About paragraph size/leading so the two paired columns read
+     at the same weight. */
   .pubs li {
-    font-size: 0.95rem;
-    line-height: 1.55;
-    margin: 0 0 1.05rem;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin: 0 0 1.15rem;
     text-wrap: pretty;
     /* let the long DOI URLs wrap instead of overflowing the narrow column */
     overflow-wrap: break-word;
-  }
-  .pubs .more {
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 0.9rem;
-    margin: 0.4rem 0 0;
   }
 
   /* ---------- about ---------- */
@@ -722,7 +719,6 @@
           <a href="https://doi.org/10.1007/s10763-022-10295-1">https://doi.org/10.1007/s10763-022-10295-1</a>
         </li>
       </ul>
-      <p class="more"><a href="cv.pdf">Full CV (PDF)</a></p>
     </section>
     </div>
   </main>
