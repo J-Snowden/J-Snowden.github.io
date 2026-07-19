@@ -8,7 +8,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<script>
+  // Apply a saved manual theme choice before first paint (no flash).
+  // Same localStorage key as the lpa-explorer page so the choice is shared
+  // across both (they share the j-snowden.github.io origin).
+  (function(){
+    try {
+      var t = localStorage.getItem('lpa-theme');
+      if (t === 'light' || t === 'dark') {
+        document.documentElement.setAttribute('data-theme', t);
+      }
+    } catch(e){}
+  })();
+</script>
 <style>
+  /* ---------- theme palette ----------
+     One variable set drives every color. Light values live in :root;
+     the OS dark preference and an explicit [data-theme] choice both remap
+     the same variables. Theme mechanism + toggle mirror the lpa-explorer
+     page (same control, same data-theme attribute, same localStorage key)
+     so switching between the two pages isn't jarring. */
   :root {
     --bg: oklch(0.99 0.004 85);
     --surface: oklch(0.975 0.005 85);
@@ -19,9 +38,14 @@
     --border: oklch(0.89 0.006 80);
     --border-strong: oklch(0.82 0.008 80);
     --measure: 63ch;
+    /* consistent vertical rhythm between top-level sections */
+    --section-gap: clamp(2.25rem, 5.5vw, 3.75rem);
+    color-scheme: light;
   }
+
+  /* dark values, as OS default … */
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --bg: oklch(0.19 0.006 60);
       --surface: oklch(0.225 0.007 60);
       --text: oklch(0.9 0.008 80);
@@ -30,7 +54,32 @@
       --accent: oklch(0.74 0.09 250);
       --border: oklch(0.32 0.008 70);
       --border-strong: oklch(0.4 0.01 70);
+      color-scheme: dark;
     }
+  }
+
+  /* … and as an explicit manual choice (wins over the OS preference) */
+  :root[data-theme="light"] {
+    --bg: oklch(0.99 0.004 85);
+    --surface: oklch(0.975 0.005 85);
+    --text: oklch(0.26 0.012 60);
+    --muted: oklch(0.5 0.012 60);
+    --faint: oklch(0.62 0.01 60);
+    --accent: oklch(0.5 0.1 250);
+    --border: oklch(0.89 0.006 80);
+    --border-strong: oklch(0.82 0.008 80);
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    --bg: oklch(0.19 0.006 60);
+    --surface: oklch(0.225 0.007 60);
+    --text: oklch(0.9 0.008 80);
+    --muted: oklch(0.68 0.012 75);
+    --faint: oklch(0.56 0.01 75);
+    --accent: oklch(0.74 0.09 250);
+    --border: oklch(0.32 0.008 70);
+    --border-strong: oklch(0.4 0.01 70);
+    color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
@@ -68,10 +117,31 @@
   .skip:focus { left: 1rem; top: 1rem; }
 
   .wrap {
+    position: relative;
     max-width: 760px;
     margin: 0 auto;
     padding: clamp(3rem, 8vw, 6.5rem) clamp(1.25rem, 5vw, 2.5rem) 4rem;
   }
+
+  /* ---------- theme toggle (top-right) ---------- */
+  .topbar {
+    position: absolute;
+    top: clamp(1rem, 3vw, 1.6rem);
+    right: clamp(1.25rem, 5vw, 2.5rem);
+    z-index: 5;
+  }
+  .theme-toggle {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    cursor: pointer;
+  }
+  .theme-toggle:hover { color: var(--text); border-color: var(--accent); }
 
   /* ---------- font families for non-body elements ---------- */
   .sans {
@@ -79,7 +149,7 @@
   }
 
   /* ---------- header ---------- */
-  header { margin-bottom: clamp(4rem, 10vw, 7rem); }
+  header { margin-bottom: var(--section-gap); }
   h1 {
     font-size: clamp(1.9rem, 5vw, 2.5rem);
     font-weight: 600;
@@ -153,7 +223,7 @@
   }
 
   /* ---------- lead project ---------- */
-  .lead { margin-bottom: clamp(4.5rem, 11vw, 8rem); }
+  .lead { margin-bottom: var(--section-gap); }
   .lead h2 {
     font-size: clamp(1.75rem, 4.5vw, 2.25rem);
     font-weight: 600;
@@ -171,6 +241,20 @@
     border: 1px solid var(--border-strong);
     border-radius: 3px;
     background: var(--surface);
+    padding: 0;
+  }
+  /* The chart is a light-background static image, so in dark mode sit it on a
+     subtle light "card" with padding so it reads as a framed figure rather
+     than a bright slab clashing against the dark page. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .figure img {
+      background: #fbfcfe;
+      padding: clamp(0.6rem, 2.4vw, 1rem);
+    }
+  }
+  :root[data-theme="dark"] .figure img {
+    background: #fbfcfe;
+    padding: clamp(0.6rem, 2.4vw, 1rem);
   }
   .figure figcaption {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -213,7 +297,7 @@
   }
 
   /* ---------- list sections (capabilities, projects) ---------- */
-  .also, .caps { margin-bottom: clamp(4rem, 9vw, 6.5rem); }
+  .also, .caps { margin-bottom: var(--section-gap); }
   .also ul, .caps ul {
     list-style: none;
     margin: 0;
@@ -248,7 +332,7 @@
   .also .links .dot { color: var(--border-strong); user-select: none; }
 
   /* ---------- publications ---------- */
-  .pubs { margin-bottom: clamp(4rem, 9vw, 6.5rem); }
+  .pubs { margin-bottom: var(--section-gap); }
   .pubs ul {
     list-style: none;
     margin: 0;
@@ -268,7 +352,7 @@
   }
 
   /* ---------- about ---------- */
-  .about { margin-bottom: clamp(3.5rem, 8vw, 5.5rem); }
+  .about { margin-bottom: var(--section-gap); }
   .about p {
     max-width: var(--measure);
     font-size: 1.05rem;
@@ -303,6 +387,10 @@
 <a class="skip" href="#work">Skip to the work</a>
 
 <div class="wrap">
+
+  <div class="topbar">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">◐ Theme</button>
+  </div>
 
   <header>
     <h1>Jeffrey Snowden</h1>
@@ -477,13 +565,26 @@
   </main>
 
   <footer>
-    <span>built by Jeffrey Snowden</span>
-    <span class="dot" aria-hidden="true">·</span>
-    <a href="mailto:jeffreysnowden@gmail.com">email</a>
-    <span class="dot" aria-hidden="true">·</span>
-    <a href="https://github.com/J-Snowden">GitHub</a>
+    <span>© 2026 Jeffrey Snowden</span>
   </footer>
 
 </div>
+
+<script>
+  // Theme toggle: flip data-theme relative to the current (or OS) theme and
+  // persist under the shared 'lpa-theme' key. Mirrors the lpa-explorer page.
+  (function themeInit(){
+    var btn = document.getElementById('themeToggle');
+    if (!btn) return;
+    btn.addEventListener('click', function(){
+      var cur = document.documentElement.getAttribute('data-theme');
+      var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var now = cur ? cur : (sysDark ? 'dark' : 'light');
+      var next = now === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('lpa-theme', next); } catch(e){}
+    });
+  })();
+</script>
 </body>
 </html>
