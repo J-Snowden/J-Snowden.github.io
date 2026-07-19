@@ -256,11 +256,18 @@
     line-height: 1.12;
     margin: 0 0 1.6rem;
   }
+  /* Featured work fills the container width like the sections around it:
+     the figure and its explanatory text sit side by side on wide screens
+     and stack on mobile, so the page keeps a consistent full-width rhythm. */
+  .lead-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3.5vw, 3rem);
+    align-items: start;
+  }
+  .lead-aside { min-width: 0; }
   .figure {
-    /* Kept single-column (section unchanged); capped so the wider container
-       doesn't stretch the chart to an unreadable size. */
-    max-width: 860px;
-    margin: 0 0 2rem;
+    margin: 0;
   }
   .figure img {
     display: block;
@@ -430,6 +437,17 @@
   }
   .about .actions { margin-top: 1.6rem; }
 
+  /* Publications and About share a two-column row on wide screens so the
+     lower page uses the full width, matching the sections above it. */
+  .duo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    align-items: start;
+    margin-bottom: var(--section-gap);
+  }
+  .duo > section { margin-bottom: 0; min-width: 0; }
+
   /* ---------- footer ---------- */
   footer {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -454,6 +472,15 @@
     }
     .hero-photo { justify-self: center; }
     .hero-photo img { width: clamp(180px, 48vw, 240px); }
+  }
+  /* Featured-work columns and the Publications/About pair stack below 760px,
+     matching the hero breakpoint so the whole page collapses in step. */
+  @media (max-width: 760px) {
+    .lead-grid { grid-template-columns: 1fr; }
+    .duo {
+      grid-template-columns: 1fr;
+      gap: var(--section-gap);
+    }
   }
   /* Capability and project grids: one column on narrow screens. */
   @media (max-width: 640px) {
@@ -535,44 +562,48 @@
       <p class="label">Featured work</p>
       <h2 id="lead-title">Latent Profile Explorer</h2>
 
-      <figure class="figure">
-        <picture>
-          <source srcset="img/latent-profile-explorer-dark.png" media="(prefers-color-scheme: dark)">
-          <img src="img/latent-profile-explorer-light.png"
-               alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
-        </picture>
-        <figcaption>Four recovered experience profiles, separating mainly on the affective factors — Engagement, Impact, Autonomy.</figcaption>
-      </figure>
+      <div class="lead-grid">
+        <figure class="figure">
+          <picture>
+            <source srcset="img/latent-profile-explorer-dark.png" media="(prefers-color-scheme: dark)">
+            <img src="img/latent-profile-explorer-light.png"
+                 alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
+          </picture>
+          <figcaption>Four recovered experience profiles, separating mainly on the affective factors — Engagement, Impact, Autonomy.</figcaption>
+        </figure>
 
-      <div class="lead-body">
-        <p>
-          <strong>Method.</strong> Latent profile analysis finds
-          <span class="em">kinds</span> of people rather than differences between
-          groups defined in advance — here it recovers four distinct experience
-          profiles from a synthetic employee-experience survey and shows what it
-          costs to choose three or five instead.
-        </p>
-        <p>
-          <strong>So what.</strong> It surfaces the segment having the worst
-          experience even when those people are spread evenly across department,
-          tenure, and level — the cuts a standard HR dashboard already shows.
-        </p>
+        <div class="lead-aside">
+          <div class="lead-body">
+            <p>
+              <strong>Method.</strong> Latent profile analysis finds
+              <span class="em">kinds</span> of people rather than differences between
+              groups defined in advance — here it recovers four distinct experience
+              profiles from a synthetic employee-experience survey and shows what it
+              costs to choose three or five instead.
+            </p>
+            <p>
+              <strong>So what.</strong> It surfaces the segment having the worst
+              experience even when those people are spread evenly across department,
+              tenure, and level — the cuts a standard HR dashboard already shows.
+            </p>
+          </div>
+
+          <p class="note">
+            Illustrative demo. Built on synthetic data I generated to mirror an
+            employee-listening use case; the analytic approach (latent profile
+            analysis, segment profiling) reflects methods I use in my real research.
+            No proprietary or real employee data.
+          </p>
+
+          <nav class="actions" aria-label="Latent Profile Explorer links">
+            <a class="primary" href="https://j-snowden.github.io/lpa-explorer/">Open the explorer →</a>
+            <span class="dot" aria-hidden="true">·</span>
+            <a href="https://github.com/J-Snowden/lpa-explorer">Code</a>
+            <span class="dot" aria-hidden="true">·</span>
+            <a href="https://github.com/J-Snowden/lpa-explorer#readme">Methods</a>
+          </nav>
+        </div>
       </div>
-
-      <p class="note">
-        Illustrative demo. Built on synthetic data I generated to mirror an
-        employee-listening use case; the analytic approach (latent profile
-        analysis, segment profiling) reflects methods I use in my real research.
-        No proprietary or real employee data.
-      </p>
-
-      <nav class="actions" aria-label="Latent Profile Explorer links">
-        <a class="primary" href="https://j-snowden.github.io/lpa-explorer/">Open the explorer →</a>
-        <span class="dot" aria-hidden="true">·</span>
-        <a href="https://github.com/J-Snowden/lpa-explorer">Code</a>
-        <span class="dot" aria-hidden="true">·</span>
-        <a href="https://github.com/J-Snowden/lpa-explorer#readme">Methods</a>
-      </nav>
     </section>
 
     <section class="also" aria-labelledby="also-title">
@@ -623,6 +654,7 @@
       </ul>
     </section>
 
+    <div class="duo">
     <section class="pubs" aria-labelledby="pubs-title">
       <p class="label" id="pubs-title">Selected publications &amp; impact</p>
       <ul>
@@ -668,6 +700,7 @@
         <a href="cv.pdf">CV (PDF)</a>
       </nav>
     </section>
+    </div>
   </main>
 
   <footer>
