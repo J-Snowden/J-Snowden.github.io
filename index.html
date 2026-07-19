@@ -286,6 +286,14 @@
     height: auto;
     border-radius: 8px;
   }
+  /* The figure and project thumbnails are clickable (they link to the live
+     project); make the wrapper fill its box and give a subtle hover cue. */
+  .figure a,
+  .also .thumb a { display: block; }
+  .figure a img,
+  .also .thumb a img { transition: opacity 0.15s ease; }
+  .figure a:hover img,
+  .also .thumb a:hover img { opacity: 0.9; }
   /* Swap the light/dark screenshot with the manual theme toggle (data-theme),
      falling back to the OS preference — the same mechanism the palette uses,
      so the image always matches the actual page theme, not just the OS. */
@@ -577,11 +585,14 @@
           <!-- Two theme-matched screenshots; CSS shows the one matching the
                current page theme (manual toggle first, then OS preference).
                Both carry the same alt text — only the shown one is in the a11y
-               tree, since the other is display:none. -->
-          <img class="fig-light" src="img/latent-profile-explorer-light.png"
-               alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
-          <img class="fig-dark" src="img/latent-profile-explorer-dark.png"
-               alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
+               tree, since the other is display:none. The image links to the
+               live explorer (same destination as "Open the explorer" below). -->
+          <a href="https://j-snowden.github.io/lpa-explorer/" aria-label="Open the Latent Profile Explorer">
+            <img class="fig-light" src="img/latent-profile-explorer-light.png"
+                 alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
+            <img class="fig-dark" src="img/latent-profile-explorer-dark.png"
+                 alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
+          </a>
           <figcaption>Four recovered experience profiles, separating mainly on the affective factors — Engagement, Impact, Autonomy.</figcaption>
         </figure>
 
@@ -625,7 +636,9 @@
       <ul>
         <li>
           <figure class="thumb">
-            <img src="img/macrofactor-dashboard.webp" alt="Screenshot of the Macroscope trends viewer dashboard" loading="lazy">
+            <a href="https://j-snowden.github.io/macrofactor-dashboard/">
+              <img src="img/macrofactor-dashboard.webp" alt="Screenshot of the Macroscope trends viewer dashboard" loading="lazy">
+            </a>
           </figure>
           <div class="body">
             <span class="name">Macroscope · Trends Viewer</span>
@@ -639,7 +652,9 @@
         </li>
         <li>
           <figure class="thumb">
-            <img src="img/property-tax-protest.webp" alt="Screenshot of the Plumb property tax protest report" loading="lazy">
+            <a href="https://plumbtax-pulmb.hf.space/">
+              <img src="img/property-tax-protest.webp" alt="Screenshot of the Plumb property tax protest report" loading="lazy">
+            </a>
           </figure>
           <div class="body">
             <span class="name">Plumb · Property Tax Protest</span>
@@ -653,7 +668,9 @@
         </li>
         <li>
           <figure class="thumb">
-            <img src="img/t4a-literature-mural.webp" alt="Screenshot of the T4A literature mural" loading="lazy">
+            <a href="https://j-snowden.github.io/t4a-literature-mural/">
+              <img src="img/t4a-literature-mural.webp" alt="Screenshot of the T4A literature mural" loading="lazy">
+            </a>
           </figure>
           <div class="body">
             <span class="name">T4A Literature Mural</span>
@@ -698,25 +715,27 @@
       <ul>
         <li>
           Donovan, B. M., Weindling, M., Amemiya, J., Salazar, B., Lee, D.,
-          Syed, A., … &amp; Snowden, J. (2024). Humane genomics education can
-          reduce racism. <span class="em">Science, 383</span>(6685), 818–822.
+          Syed, A., Stuhlsatz, M. A., &amp; <strong>Snowden, J.</strong> (2024).
+          Humane genomics education can reduce racism.
+          <span class="em">Science, 383</span>(6685), 818–822.
           <a href="https://doi.org/10.1126/science.adi7895">https://doi.org/10.1126/science.adi7895</a>
         </li>
         <li>
-          Herrmann-Abell, C. F., Stuhlsatz, M. A. M., Wilson, C. D., Snowden, J.,
-          &amp; Donovan, B. M. (2023). Using Rasch Measurement to Develop
-          Model-Based Reasoning Assessment Tasks. In X. Liu &amp; W. J. Boone
-          (Eds.), <span class="em">Advances in Applications of Rasch Measurement
-          in Science Education</span> (Contemporary Trends and Issues in Science
-          Education, Vol. 57, pp. 241–264). Springer, Cham.
+          Herrmann-Abell, C. F., Stuhlsatz, M. A., Wilson, C. D.,
+          <strong>Snowden, J.</strong>, &amp; Donovan, B. M. (2023). Using Rasch
+          Measurement to Develop Model-Based Reasoning Assessment Tasks. In
+          <span class="em">Advances in Applications of Rasch Measurement in
+          Science Education</span> (pp. 241–264). Cham: Springer International
+          Publishing.
           <a href="https://doi.org/10.1007/978-3-031-28776-3_10">https://doi.org/10.1007/978-3-031-28776-3_10</a>
         </li>
         <li>
-          Schultheis, E. H., Kjelvik, M. K., Snowden, J., et al. (2023). Effects
-          of Data Nuggets on Student Interest in STEM Careers, Self-efficacy in
-          Data Tasks, and Ability to Construct Scientific Explanations.
+          Schultheis, E. H., Kjelvik, M. K., <strong>Snowden, J.</strong>,
+          Mead, L., &amp; Stuhlsatz, M. A. (2023). Effects of data nuggets on
+          student interest in STEM careers, self-efficacy in data tasks, and
+          ability to construct scientific explanations.
           <span class="em">International Journal of Science and Mathematics
-          Education, 21</span>, 1339–1362.
+          Education, 21</span>(4), 1339–1362.
           <a href="https://doi.org/10.1007/s10763-022-10295-1">https://doi.org/10.1007/s10763-022-10295-1</a>
         </li>
       </ul>
