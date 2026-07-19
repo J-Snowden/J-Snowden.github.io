@@ -271,28 +271,28 @@
   .figure {
     margin: 0;
   }
+  /* Each PNG already carries its own theme-matched background and card
+     borders, so the image sits flush — no outer border, no padding, no
+     background slab. A small radius softens the corners if the baked-in
+     background is ever a hair off the page background. */
   .figure img {
     display: block;
     width: 100%;
     height: auto;
-    border: 1px solid var(--border-strong);
-    border-radius: 3px;
-    background: var(--surface);
-    padding: 0;
+    border-radius: 8px;
   }
-  /* The chart is a light-background static image, so in dark mode sit it on a
-     subtle light "card" with padding so it reads as a framed figure rather
-     than a bright slab clashing against the dark page. */
+  /* Swap the light/dark screenshot with the manual theme toggle (data-theme),
+     falling back to the OS preference — the same mechanism the palette uses,
+     so the image always matches the actual page theme, not just the OS. */
+  .figure .fig-dark { display: none; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .figure img {
-      background: #fbfcfe;
-      padding: clamp(0.6rem, 2.4vw, 1rem);
-    }
+    :root:not([data-theme="light"]) .figure .fig-light { display: none; }
+    :root:not([data-theme="light"]) .figure .fig-dark { display: block; }
   }
-  :root[data-theme="dark"] .figure img {
-    background: #fbfcfe;
-    padding: clamp(0.6rem, 2.4vw, 1rem);
-  }
+  :root[data-theme="dark"] .figure .fig-light { display: none; }
+  :root[data-theme="dark"] .figure .fig-dark { display: block; }
+  :root[data-theme="light"] .figure .fig-light { display: block; }
+  :root[data-theme="light"] .figure .fig-dark { display: none; }
   .figure figcaption {
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 0.8rem;
@@ -570,11 +570,14 @@
         <!-- Left column: figure with the explorer/code/methods links beneath it. -->
         <div class="lead-media">
         <figure class="figure">
-          <picture>
-            <source srcset="img/latent-profile-explorer-dark.png" media="(prefers-color-scheme: dark)">
-            <img src="img/latent-profile-explorer-light.png"
-                 alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
-          </picture>
+          <!-- Two theme-matched screenshots; CSS shows the one matching the
+               current page theme (manual toggle first, then OS preference).
+               Both carry the same alt text — only the shown one is in the a11y
+               tree, since the other is display:none. -->
+          <img class="fig-light" src="img/latent-profile-explorer-light.png"
+               alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
+          <img class="fig-dark" src="img/latent-profile-explorer-dark.png"
+               alt="Line chart titled &quot;Mean factor score by experience profile&quot;, showing four experience-profile lines (Low, Moderate-Low, Moderate-High, and High Engagement) fanning apart across five factors — Clarity, Enablement, Engagement, Impact, Autonomy — next to a table of each profile's size and classification certainty.">
           <figcaption>Four recovered experience profiles, separating mainly on the affective factors — Engagement, Impact, Autonomy.</figcaption>
         </figure>
 
