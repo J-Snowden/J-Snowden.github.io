@@ -159,11 +159,15 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: clamp(2rem, 5vw, 4rem);
+    /* Tight gap so the text column gets as much of the row as possible
+       (helps the credential chips sit on a single line) while the photo
+       keeps its size and top-right placement. */
+    gap: clamp(1rem, 2vw, 1.75rem);
   }
-  /* Keep the hero prose (tagline + chips + links) at a readable measure even
-     though it sits in a flexible grid column. */
-  .hero-text { max-width: var(--measure); min-width: 0; }
+  /* Let the hero text fill its (now wider) grid column. The running-prose
+     tagline keeps its own readable cap via .intro below, so only the short
+     bits — heading, chips, contact row — use the extra width. */
+  .hero-text { min-width: 0; }
   .hero-photo { justify-self: end; }
   .hero-photo img {
     display: block;
@@ -209,7 +213,7 @@
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 0.55rem;
+    gap: 0.5rem 0.45rem;
   }
   .chips li {
     font-size: 0.8rem;
@@ -218,7 +222,7 @@
     background: var(--surface);
     border: 1px solid var(--border-strong);
     border-radius: 100px;
-    padding: 0.3rem 0.75rem;
+    padding: 0.3rem 0.62rem;
     white-space: nowrap;
   }
 
@@ -519,9 +523,9 @@
         into decisions.
       </p>
       <ul class="chips" aria-label="Credentials">
-        <li>Published in <span class="em">Science</span></li>
         <li>M.A. Research &amp; Evaluation Methods</li>
         <li>R · psychometrics · multilevel modeling</li>
+        <li>Published in <span class="em">Science</span></li>
       </ul>
       <nav class="meta" aria-label="Contact and profiles">
         <a href="mailto:jeffreysnowden@gmail.com">Email</a>
@@ -692,7 +696,7 @@
     </section>
 
     <section class="pubs" aria-labelledby="pubs-title">
-      <p class="label" id="pubs-title">Selected publications &amp; impact</p>
+      <p class="label" id="pubs-title">Selected publications</p>
       <ul>
         <li>
           Donovan, B. M., Weindling, M., Amemiya, J., Salazar, B., Lee, D.,
@@ -743,6 +747,19 @@
       document.documentElement.setAttribute('data-theme', next);
       try { localStorage.setItem('lpa-theme', next); } catch(e){}
     });
+  })();
+
+  // Open outbound links in a new tab — external sites, project demos, PDFs,
+  // and the publication DOIs — so visitors keep this page open while they
+  // follow one. Same-page anchors (#…) and mailto: links stay in this tab.
+  (function outboundLinks(){
+    var links = document.querySelectorAll('a[href]');
+    for (var i = 0; i < links.length; i++) {
+      var href = links[i].getAttribute('href');
+      if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0) continue;
+      links[i].target = '_blank';
+      links[i].rel = (links[i].rel ? links[i].rel + ' ' : '') + 'noopener noreferrer';
+    }
   })();
 </script>
 </body>
