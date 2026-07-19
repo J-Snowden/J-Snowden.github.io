@@ -265,6 +265,8 @@
     gap: clamp(1.5rem, 3.5vw, 3rem);
     align-items: start;
   }
+  .lead-media { min-width: 0; }
+  .lead-media .actions { margin-top: 1.3rem; }
   .lead-aside { min-width: 0; }
   .figure {
     margin: 0;
@@ -365,13 +367,13 @@
     background: var(--surface);
   }
 
-  /* selected projects — card grid, 2 across on wide screens, with thumbnails */
+  /* selected projects — card grid, all three on one row on wide screens */
   .also ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(1.1rem, 2.4vw, 1.6rem);
   }
   .also li {
@@ -477,6 +479,8 @@
      matching the hero breakpoint so the whole page collapses in step. */
   @media (max-width: 760px) {
     .lead-grid { grid-template-columns: 1fr; }
+    /* Three-up projects step down to two-up before collapsing at 640px. */
+    .also ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .duo {
       grid-template-columns: 1fr;
       gap: var(--section-gap);
@@ -563,6 +567,8 @@
       <h2 id="lead-title">Latent Profile Explorer</h2>
 
       <div class="lead-grid">
+        <!-- Left column: figure with the explorer/code/methods links beneath it. -->
+        <div class="lead-media">
         <figure class="figure">
           <picture>
             <source srcset="img/latent-profile-explorer-dark.png" media="(prefers-color-scheme: dark)">
@@ -571,6 +577,15 @@
           </picture>
           <figcaption>Four recovered experience profiles, separating mainly on the affective factors — Engagement, Impact, Autonomy.</figcaption>
         </figure>
+
+          <nav class="actions" aria-label="Latent Profile Explorer links">
+            <a class="primary" href="https://j-snowden.github.io/lpa-explorer/">Open the explorer →</a>
+            <span class="dot" aria-hidden="true">·</span>
+            <a href="https://github.com/J-Snowden/lpa-explorer">Code</a>
+            <span class="dot" aria-hidden="true">·</span>
+            <a href="https://github.com/J-Snowden/lpa-explorer#readme">Methods</a>
+          </nav>
+        </div>
 
         <div class="lead-aside">
           <div class="lead-body">
@@ -594,14 +609,6 @@
             analysis, segment profiling) reflects methods I use in my real research.
             No proprietary or real employee data.
           </p>
-
-          <nav class="actions" aria-label="Latent Profile Explorer links">
-            <a class="primary" href="https://j-snowden.github.io/lpa-explorer/">Open the explorer →</a>
-            <span class="dot" aria-hidden="true">·</span>
-            <a href="https://github.com/J-Snowden/lpa-explorer">Code</a>
-            <span class="dot" aria-hidden="true">·</span>
-            <a href="https://github.com/J-Snowden/lpa-explorer#readme">Methods</a>
-          </nav>
         </div>
       </div>
     </section>
@@ -655,28 +662,6 @@
     </section>
 
     <div class="duo">
-    <section class="pubs" aria-labelledby="pubs-title">
-      <p class="label" id="pubs-title">Selected publications &amp; impact</p>
-      <ul>
-        <li>
-          Donovan, B. M., et al. (2024). Humane genomics education can reduce
-          racism. <span class="em">Science, 383</span>(6685), 818–822.
-        </li>
-        <li>
-          Herrmann-Abell, C. F., et al. (2023). Using Rasch Measurement to Develop
-          Model-Based Reasoning Assessment Tasks. In <span class="em">Advances in
-          Applications of Rasch Measurement in Science Education</span> (pp.
-          241–264). Springer.
-        </li>
-        <li>
-          Schultheis, E. H., et al. (2022). Effects of Data Nuggets on Student
-          Interest in STEM Careers. <span class="em">International Journal of
-          Science and Mathematics Education</span>.
-        </li>
-      </ul>
-      <p class="more"><a href="cv.pdf">Full CV (PDF)</a></p>
-    </section>
-
     <section class="about" aria-labelledby="about-title">
       <p class="label" id="about-title">About</p>
       <p>
@@ -699,6 +684,28 @@
         <span class="dot" aria-hidden="true">·</span>
         <a href="cv.pdf">CV (PDF)</a>
       </nav>
+    </section>
+
+    <section class="pubs" aria-labelledby="pubs-title">
+      <p class="label" id="pubs-title">Selected publications &amp; impact</p>
+      <ul>
+        <li>
+          Donovan, B. M., et al. (2024). Humane genomics education can reduce
+          racism. <span class="em">Science, 383</span>(6685), 818–822.
+        </li>
+        <li>
+          Herrmann-Abell, C. F., et al. (2023). Using Rasch Measurement to Develop
+          Model-Based Reasoning Assessment Tasks. In <span class="em">Advances in
+          Applications of Rasch Measurement in Science Education</span> (pp.
+          241–264). Springer.
+        </li>
+        <li>
+          Schultheis, E. H., et al. (2022). Effects of Data Nuggets on Student
+          Interest in STEM Careers. <span class="em">International Journal of
+          Science and Mathematics Education</span>.
+        </li>
+      </ul>
+      <p class="more"><a href="cv.pdf">Full CV (PDF)</a></p>
     </section>
     </div>
   </main>
